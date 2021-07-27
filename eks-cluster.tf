@@ -1,0 +1,15 @@
+resource "aws_eks_cluster" "dev" {
+  name     = var.cluster-name
+  role_arn = aws_iam_role.dev-cluster.arn
+
+  vpc_config {
+    security_group_ids = [aws_security_group.dev-cluster.id]
+    subnet_ids         = module.vpc.public_subnets
+  }
+
+  depends_on = [
+    aws_iam_role_policy_attachment.dev-cluster-AmazonEKSClusterPolicy,
+    aws_iam_role_policy_attachment.dev-cluster-AmazonEKSServicePolicy,
+  ]
+}
+
