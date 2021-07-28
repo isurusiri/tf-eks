@@ -4,7 +4,7 @@ resource "aws_eks_cluster" "dev" {
 
   vpc_config {
     security_group_ids = [aws_security_group.dev-cluster.id]
-    subnet_ids         = module.vpc.public_subnets
+    subnet_ids         = module.vpc_eks.public_subnets
   }
 
   depends_on = [

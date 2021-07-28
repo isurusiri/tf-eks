@@ -1,4 +1,4 @@
-module "vpc" {
+module "vpc_eks" {
   source = "./modules/vpc"
 
   name                         = "vpc-module-demo-x"
