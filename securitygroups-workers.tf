@@ -1,3 +1,26 @@
+# worker module
+
+module "sg_worker" {
+  source = "./modules/securitygroups"
+
+  name        = "eks-workder-node-sg"
+  description = "Security group for all nodes in the cluster."
+  vpc_id      = ""
+
+  tags = {
+    "Name"                                      = "terraform-eks-dev-node"
+    "kubernetes.io/cluster/${var.cluster-name}" = "owned"
+  }
+
+  node_ingress_description     = "Allow node to communicate with each other"
+  node_ingress_source_sg_id    = ""
+  cluster_ingress_description  = ""
+  cluster_ingress_source_sg_id = ""
+
+  is_worker = true
+
+}
+
 # workers
 resource "aws_security_group" "dev-node" {
   name        = "terraform-eks-dev-node"
