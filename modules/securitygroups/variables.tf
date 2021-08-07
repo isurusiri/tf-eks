@@ -14,11 +14,13 @@ variable "vpc_id" {
 
 
 variable "egress_from_port" {
-  type = number
+  default = 0
+  type    = number
 }
 
 variable "egress_to_port" {
-  type = number
+  default = 0
+  type    = number
 }
 
 variable "egress_protocol" {
@@ -63,9 +65,6 @@ variable "cluster_ingress_from_port" {
   type    = number
 }
 
-variable "cluster_ingress_source_sg_id" {
-  type = string
-}
 
 variable "node_ingress_source_sg_id" {
   type = string

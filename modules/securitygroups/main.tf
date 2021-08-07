@@ -28,7 +28,7 @@ resource "aws_security_group_rule" "node-ingress-cluster" {
   from_port                = var.cluster_ingress_from_port
   protocol                 = "tcp"
   security_group_id        = aws_security_group.node-sg.id
-  source_security_group_id = var.is_worker ? aws_security_group.dev-cluster.id : null
+  source_security_group_id = var.is_worker ? aws_security_group.node-sg.id : null
   to_port                  = var.cluster_ingress_to_port
   type                     = "ingress"
 }

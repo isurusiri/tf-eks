@@ -23,7 +23,7 @@ resource "aws_launch_configuration" "dev" {
   image_id                    = data.aws_ami.eks-worker.id
   instance_type               = "t2.large"
   name_prefix                 = "terraform-eks-dev"
-  security_groups             = [aws_security_group.dev-node.id]
+  security_groups             = [module.sg_worker.sg_id]
   user_data_base64            = base64encode(local.dev-node-userdata)
 
   lifecycle {
@@ -51,4 +51,3 @@ resource "aws_autoscaling_group" "dev" {
     propagate_at_launch = true
   }
 }
-
