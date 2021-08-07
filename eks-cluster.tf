@@ -3,7 +3,7 @@ resource "aws_eks_cluster" "dev" {
   role_arn = aws_iam_role.dev-cluster.arn
 
   vpc_config {
-    security_group_ids = [aws_security_group.dev-cluster.id]
+    security_group_ids = [module.sg_cluster.sg_id]
     subnet_ids         = module.vpc_eks.public_subnets
   }
 
@@ -12,4 +12,3 @@ resource "aws_eks_cluster" "dev" {
     aws_iam_role_policy_attachment.dev-cluster-AmazonEKSServicePolicy,
   ]
 }
-

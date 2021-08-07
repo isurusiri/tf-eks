@@ -1,36 +1,43 @@
-resource "aws_security_group" "dev-cluster" {
-  name        = "terraform-eks-dev-cluster"
+# worker module
+
+module "sg_worker" {
+  source = "./modules/securitygroups"
+
+  name        = "eks-workder-node-sg"
+  description = "Security group for all nodes in the cluster."
+  vpc_id      = module.vpc_eks.vpc_id
+
+  tags = {
+    "Name"                                      = "terraform-eks-dev-node"
+    "kubernetes.io/cluster/${var.cluster-name}" = "owned"
+  }
+
+  node_ingress_description    = "Allow node to communicate with each other"
+  node_ingress_source_sg_id   = ""
+  cluster_ingress_description = "Allow worker Kubelets and pods to receive communication from the cluster control plane"
+
+  is_worker = true
+
+}
+
+# cluster module
+
+module "sg_cluster" {
+  source = "./modules/securitygroups"
+
+  name        = "eks-cluster-sg"
   description = "Cluster communication with worker nodes"
   vpc_id      = module.vpc_eks.vpc_id
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
   tags = {
-    Name = "terraform-eks-dev"
+    Name = "terraform-eks-cluster"
   }
-}
 
-resource "aws_security_group_rule" "dev-cluster-ingress-node-https" {
-  description              = "Allow pods to communicate with the cluster API Server"
-  from_port                = 443
-  protocol                 = "tcp"
-  security_group_id        = aws_security_group.dev-cluster.id
-  source_security_group_id = aws_security_group.dev-node.id
-  to_port                  = 443
-  type                     = "ingress"
-}
+  node_ingress_description    = "Allow pods to communicate with the cluster API server"
+  node_ingress_protocol       = "tcp"
+  cluster_ingress_description = "Allow pods to communicate withe the cluster API server"
+  node_ingress_source_sg_id   = module.sg_worker.sg_id
 
-resource "aws_security_group_rule" "dev-cluster-ingress-workstation-https" {
-  cidr_blocks       = [local.workstation-external-cidr]
-  description       = "Allow workstation to communicate with the cluster API Server"
-  from_port         = 443
-  protocol          = "tcp"
-  security_group_id = aws_security_group.dev-cluster.id
-  to_port           = 443
-  type              = "ingress"
+  is_worker = false
+
 }
