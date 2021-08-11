@@ -1,6 +1,6 @@
 resource "aws_eks_cluster" "dev" {
   name     = var.cluster-name
-  role_arn = aws_iam_role.dev-cluster.arn
+  role_arn = module.iam_cluster.iam_arn
 
   vpc_config {
     security_group_ids = [module.sg_cluster.sg_id]
@@ -8,7 +8,7 @@ resource "aws_eks_cluster" "dev" {
   }
 
   depends_on = [
-    aws_iam_role_policy_attachment.dev-cluster-AmazonEKSClusterPolicy,
-    aws_iam_role_policy_attachment.dev-cluster-AmazonEKSServicePolicy,
+    module.iam_cluster.eks_cluster_policy,
+    module.iam_cluster.eks_service_policy,
   ]
 }
