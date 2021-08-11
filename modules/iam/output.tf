@@ -11,6 +11,5 @@ output "eks_service_policy" {
 }
 
 output "iam_instance_profile_name" {
-  # value = aws_iam_instance_profile.iam_instance_profile[0].name
   value = join("", aws_iam_instance_profile.iam_instance_profile.*.name)
 }
