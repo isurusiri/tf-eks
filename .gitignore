@@ -5,3 +5,4 @@
 *.terraform
 *devkey*
 *local.tfvars
+*terraform.tfstate.d*

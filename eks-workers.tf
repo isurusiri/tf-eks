@@ -19,7 +19,7 @@ USERDATA
 
 resource "aws_launch_configuration" "dev" {
   associate_public_ip_address = true
-  iam_instance_profile        = aws_iam_instance_profile.dev-node.name
+  iam_instance_profile        = module.iam_worker.iam_instance_profile_name
   image_id                    = data.aws_ami.eks-worker.id
   instance_type               = "t2.large"
   name_prefix                 = "terraform-eks-dev"

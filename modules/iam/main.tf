@@ -33,7 +33,6 @@ POLICY
 resource "aws_iam_role" "iam_role" {
   name               = var.iam_role_name
   assume_role_policy = var.is_worker ? local.node_assume_role_policy : local.server_assume_role_policy
-
 }
 
 resource "aws_iam_role_policy_attachment" "AmazonEKSClusterPolicy" {
