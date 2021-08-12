@@ -6,8 +6,8 @@ locals {
 apiVersion: v1
 clusters:
 - cluster:
-    server: ${aws_eks_cluster.dev.endpoint}
-    certificate-authority-data: ${aws_eks_cluster.dev.certificate_authority[0].data}
+    server: ${module.eks_cluster.cluster_endpoint}
+    certificate-authority-data: ${module.eks_cluster.cluster_certificate_authority_data}
   name: kubernetes
 contexts:
 - context:
